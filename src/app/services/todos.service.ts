@@ -71,6 +71,7 @@ export class TodosService {
   /**
    * DELETE
    */
+  subjectDeleteTodo = new Subject<Todo>();
   deleteTodo(todo: Todo): void {
     const todos = this.getTodos();
 
@@ -82,5 +83,11 @@ export class TodosService {
     todos.splice(foundIndex, 1);
 
     window.localStorage.setItem('todos', JSON.stringify(todos));
+
+    this.subjectDeleteTodo.next(todo);
+  }
+
+  onDeleteTodo(): Observable<Todo> {
+    return this.subjectDeleteTodo.asObservable();
   }
 }

@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Todo } from 'src/app/Todo';
+import { TodosService } from 'src/app/services/todos.service';
 import { UiService } from 'src/app/services/ui.service';
 
 @Component({
@@ -10,7 +12,10 @@ export class AddTodoComponent {
   showAddTodo = false;
   title = '';
 
-  constructor(private uiService: UiService) {}
+  constructor(
+    private uiService: UiService,
+    private todoService: TodosService
+  ) {}
 
   ngOnInit() {
     this.uiService.onToggleAddTodo().subscribe((show) => {
@@ -19,6 +24,17 @@ export class AddTodoComponent {
   }
   onSubmit(event: any) {
     event.preventDefault();
-    console.log('formSubmit,', event);
+    //@ts-ignore
+    console.log('formSubmit,', Array.from(new FormData(event.target)));
+
+    const newTodo: Todo = {
+      text: this.title,
+      day: Date.now(),
+      reminder: true,
+      id: Date.now(),
+    };
+    this.title = '';
+
+    this.todoService.addTodo(newTodo);
   }
 }

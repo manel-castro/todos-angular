@@ -14,5 +14,13 @@ export class TodosComponent {
 
   ngOnInit() {
     this.todos = this.todosService.getTodos();
+
+    this.todosService.onAddTodo().subscribe((todo) => {
+      this.todos.push(todo);
+    });
+
+    this.todosService.onDeleteTodo().subscribe((todo) => {
+      this.todos = this.todos.filter((item) => item.id !== todo.id);
+    });
   }
 }
