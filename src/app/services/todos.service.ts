@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Todo } from '../Todo';
 import { HttpClient } from '@angular/common/http';
 
@@ -35,12 +35,21 @@ export class TodosService {
   /**
    * CREATE
    */
+
+  subjectAddTodo = new Subject<Todo>();
+
   addTodo(todo: Todo): void {
     const todos = this.getTodos();
 
     todos.push(todo);
 
     window.localStorage.setItem('todos', JSON.stringify(todos));
+
+    this.subjectAddTodo.next(todo);
+  }
+
+  onAddTodo(): Observable<Todo> {
+    return this.subjectAddTodo.asObservable();
   }
 
   /**

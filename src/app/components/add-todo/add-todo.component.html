@@ -1,0 +1,9 @@
+<form
+  (submit)="onSubmit($event)"
+  *ngIf="showAddTodo"
+  [ngStyle]="{ padding: '20px' }"
+>
+  <input type="text" name="title" [(ngModel)]="title" />
+
+  <button type="submit">Add todo</button>
+</form>
