@@ -7,8 +7,18 @@ import { UiService } from 'src/app/services/ui.service';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent {
+  showAddTodo = false;
+
   constructor(private uiService: UiService) {}
+
+  ngOnInit() {
+    this.uiService.onToggleAddTodo().subscribe((show) => {
+      this.showAddTodo = show;
+    });
+  }
+
   handleAddTodo() {
-    this.uiService.toggleAddTodo();
+    this.showAddTodo = !this.showAddTodo;
+    this.uiService.toggleAddTodo(this.showAddTodo);
   }
 }

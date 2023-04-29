@@ -6,6 +6,8 @@
     wordWrap: 'break-word'
   }"
 >
-  <div [ngStyle]="{ wordWrap: 'break-word' }">{{ todo.text }}</div>
+  <div (click)="handleUpdateTodo()" [ngStyle]="{ wordWrap: 'break-word' }">
+    {{ todo.text }}
+  </div>
   <app-button (btnClick)="handleDeleteTodo()" title="Delete"></app-button>
 </div>

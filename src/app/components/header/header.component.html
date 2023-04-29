@@ -1,1 +1,4 @@
-<app-button (btnClick)="handleAddTodo()" title="Add Todo"></app-button>
+<app-button
+  (btnClick)="handleAddTodo()"
+  title="{{ !showAddTodo ? 'Add Todo' : 'Close' }}"
+></app-button>

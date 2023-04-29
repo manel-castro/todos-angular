@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Todo } from 'src/app/Todo';
 import { TodosService } from 'src/app/services/todos.service';
+import { UiService } from 'src/app/services/ui.service';
 
 @Component({
   selector: 'app-todo',
@@ -10,10 +11,16 @@ import { TodosService } from 'src/app/services/todos.service';
 export class TodoComponent {
   @Input() todo: Todo;
 
-  constructor(private todosService: TodosService) {}
+  constructor(
+    private todosService: TodosService,
+    private uiService: UiService
+  ) {}
 
   handleDeleteTodo() {
-    console.log('delete');
     this.todosService.deleteTodo(this.todo);
+  }
+
+  handleUpdateTodo() {
+    this.uiService.toggleUpdateTodo(this.todo);
   }
 }

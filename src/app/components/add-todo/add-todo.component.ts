@@ -11,6 +11,7 @@ import { UiService } from 'src/app/services/ui.service';
 export class AddTodoComponent {
   showAddTodo = false;
   title = '';
+  id?: number;
 
   constructor(
     private uiService: UiService,
@@ -20,6 +21,12 @@ export class AddTodoComponent {
   ngOnInit() {
     this.uiService.onToggleAddTodo().subscribe((show) => {
       this.showAddTodo = show;
+      if (show === false) this.id = undefined;
+    });
+
+    this.uiService.onToggleUdpateTodo().subscribe((todo) => {
+      this.id = todo.id;
+      this.showAddTodo = true;
     });
   }
   onSubmit(event: any) {
@@ -31,10 +38,16 @@ export class AddTodoComponent {
       text: this.title,
       day: Date.now(),
       reminder: true,
-      id: Date.now(),
+      id: this.id || Date.now(),
     };
-    this.title = '';
 
-    this.todoService.addTodo(newTodo);
+    if (!this.id) {
+      this.todoService.addTodo(newTodo);
+    } else {
+      this.todoService.updateTodo(newTodo);
+    }
+
+    this.title = '';
+    this.uiService.toggleAddTodo(false);
   }
 }

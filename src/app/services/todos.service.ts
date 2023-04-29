@@ -23,8 +23,11 @@ export class TodosService {
    */
   getTodos(): Todo[] {
     const todos = JSON.parse(window.localStorage.getItem('todos') || '{}');
+    if (!Object.keys(todos).length) {
+      window.localStorage.setItem('todos', JSON.stringify([]));
+    }
 
-    return todos;
+    return todos || [];
   }
 
   getTodo(todo: Todo): Todo | undefined {
@@ -55,6 +58,7 @@ export class TodosService {
   /**
    * UPDATE
    */
+  subjectUpdateTodo = new Subject<Todo>();
   updateTodo(todo: Todo): void {
     const todos = this.getTodos();
 
@@ -66,6 +70,12 @@ export class TodosService {
     todos.splice(foundIndex, 1, todo);
 
     window.localStorage.setItem('todos', JSON.stringify(todos));
+
+    this.subjectUpdateTodo.next(todo);
+  }
+
+  onUpdateTodo(): Observable<Todo> {
+    return this.subjectUpdateTodo.asObservable();
   }
 
   /**
@@ -76,7 +86,7 @@ export class TodosService {
     const todos = this.getTodos();
 
     const foundIndex = todos.findIndex((item) => item.id === todo.id);
-    if (!foundIndex) {
+    if (foundIndex === -1) {
       throw new Error('Unable to find todo');
     }
 

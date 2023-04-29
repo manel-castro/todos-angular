@@ -22,5 +22,11 @@ export class TodosComponent {
     this.todosService.onDeleteTodo().subscribe((todo) => {
       this.todos = this.todos.filter((item) => item.id !== todo.id);
     });
+
+    this.todosService.onUpdateTodo().subscribe((todo) => {
+      this.todos = this.todos.map((item) =>
+        item.id === todo.id ? todo : item
+      );
+    });
   }
 }
